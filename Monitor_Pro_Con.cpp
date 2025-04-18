@@ -7,7 +7,7 @@
 using namespace std;
 
 #pragma region ClassesForMonitor 
-static int N = 100;
+static const int N = 100;
 
 //  Condition Queue
 class bufHasData{
@@ -65,7 +65,8 @@ static monitor Monitor;
 void pushData(char data){
 
     if(monitor::validBufs == N){ //  물건이 가득 있어?
-        bufHasData::wait();
+        //  없으면 여기서 기다려라
+        bufHasSpace::wait();
     }
 
     //  먼저 buffer의 idx:in에 데이터를 삽입
@@ -83,7 +84,8 @@ void pushData(char data){
 
 char popData(){
     if(monitor::validBufs == 0){ // 물건이 있긴해?
-        bufHasSpace::wait();
+        //  없으면 여기서 기다려라
+        bufHasData::wait();
     }
 
     //  먼저 buffer의 idx::out에서 데이터를 인출함
